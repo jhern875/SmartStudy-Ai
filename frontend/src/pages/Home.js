@@ -1,11 +1,14 @@
-import React from 'react';
 import logo from '../images/logo.png';
 import '../styles/Home.css';
 
 const Home = () => {
   const handleGetStarted = () => {
-    // Navigate to upload page or open upload modal
-    console.log('Get Started clicked');
+    // Use the navigateTo function for proper routing
+    if (window.navigateTo) {
+      window.navigateTo('/documents');
+    } else {
+      window.location.href = '/documents';
+    }
   };
 
   return (
