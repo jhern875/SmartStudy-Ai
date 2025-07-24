@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -28,11 +29,25 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'SmartStudy AI Backend is running' });
 });
 
-// Get uploaded documents list
+// Get uploaded documents list - exclude .txt files created alongside original files
 app.get('/api/documents', (req, res) => {
   try {
     const files = fs.readdirSync(uploadsDir);
-    const documents = files.map(filename => {
+    
+    // Filter out .txt files that are created alongside original files
+    const filteredFiles = files.filter(filename => {
+      const extension = path.extname(filename).toLowerCase();
+      // Exclude .txt files that have another extension before .txt (e.g., document.docx.txt)
+      if (extension === '.txt') {
+        const nameWithoutTxt = filename.slice(0, -4); // Remove .txt
+        const hasOtherExtension = path.extname(nameWithoutTxt).toLowerCase();
+        // If the file without .txt has another extension, exclude it
+        return !hasOtherExtension || hasOtherExtension === '.txt';
+      }
+      return true;
+    });
+    
+    const documents = filteredFiles.map(filename => {
       const filePath = path.join(uploadsDir, filename);
       const stats = fs.statSync(filePath);
       return {
@@ -54,4 +69,5 @@ app.get('/api/documents', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 SmartStudy AI Backend running on port ${PORT}`);
   console.log(`📁 Uploads directory: ${uploadsDir}`);
+  console.log(`🔑 OpenAI API Key: ${process.env.OPENAI_API_KEY ? 'Configured' : 'Not configured'}`);
 }); 

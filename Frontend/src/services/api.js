@@ -4,8 +4,11 @@ class ApiService {
   // Health check
   async checkHealth() {
     try {
+      console.log('Checking backend health...');
       const response = await fetch(`${API_BASE_URL}/health`);
-      return await response.json();
+      const result = await response.json();
+      console.log('Health check result:', result);
+      return result;
     } catch (error) {
       console.error('Health check failed:', error);
       return { status: 'error', message: 'Backend not available' };
@@ -15,11 +18,15 @@ class ApiService {
   // Get list of uploaded documents
   async getDocuments() {
     try {
+      console.log('Fetching documents from:', `${API_BASE_URL}/documents`);
       const response = await fetch(`${API_BASE_URL}/documents`);
+      console.log('Documents response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to fetch documents');
       }
-      return await response.json();
+      const documents = await response.json();
+      console.log('Documents fetched:', documents);
+      return documents;
     } catch (error) {
       console.error('Failed to get documents:', error);
       return [];
@@ -63,70 +70,104 @@ class ApiService {
     }
   }
 
-  // AI endpoints (fake for now)
-  async summarizeText(text) {
+  // AI endpoints - now working with document IDs
+  async summarizeDocument(documentId) {
     try {
       const response = await fetch(`${API_BASE_URL}/ai/summarize`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ documentId }),
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate summary');
+      }
+      
       return await response.json();
     } catch (error) {
       console.error('Summarize failed:', error);
       return {
-        summary: "This is a sample summary. AI integration coming soon!",
-        status: "placeholder"
+        summary: "Sorry, I couldn't generate a summary at this time. Please try again.",
+        status: "error",
+        error: error.message
       };
     }
   }
 
-  async generateQuestions(text) {
+  async generateQuestions(documentId) {
     try {
       const response = await fetch(`${API_BASE_URL}/ai/questions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ documentId }),
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate questions');
+      }
+      
       return await response.json();
     } catch (error) {
       console.error('Questions generation failed:', error);
       return {
         questions: [
-          "What is the main topic of this document?",
-          "What are the key points discussed?",
-          "How does this relate to the subject matter?"
+          {
+            question: "What is the main topic of this document?",
+            type: "conceptual"
+          },
+          {
+            question: "What are the key points discussed?",
+            type: "factual"
+          },
+          {
+            question: "How does this relate to the subject matter?",
+            type: "analytical"
+          }
         ],
-        status: "placeholder"
+        status: "error",
+        error: error.message
       };
     }
   }
 
-  async extractTerms(text) {
+  async extractImportantTerms(documentId) {
     try {
       const response = await fetch(`${API_BASE_URL}/ai/terms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ documentId }),
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to extract terms');
+      }
+      
       return await response.json();
     } catch (error) {
       console.error('Terms extraction failed:', error);
       return {
         terms: [
-          "Artificial Intelligence",
-          "Machine Learning",
-          "Data Processing",
-          "Algorithm",
-          "Neural Network"
+          {
+            term: "Artificial Intelligence",
+            definition: "The simulation of human intelligence in machines"
+          },
+          {
+            term: "Machine Learning",
+            definition: "A subset of AI that enables systems to learn from data"
+          },
+          {
+            term: "Data Processing",
+            definition: "The collection and manipulation of data"
+          }
         ],
-        status: "placeholder"
+        status: "error",
+        error: error.message
       };
     }
   }

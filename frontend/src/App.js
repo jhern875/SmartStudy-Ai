@@ -17,15 +17,17 @@ function App() {
   // Add navigation function to window for components to use
   window.navigateTo = navigateTo;
   
-  if (currentPath === '/upload') {
-    return <Upload />;
-  } else if (currentPath === '/results') {
-    return <Results />;
-  } else if (currentPath === '/documents') {
-    return <DocumentSelection />;
+  // Simple routing based on pathname
+  switch (currentPath) {
+    case '/upload':
+      return <Upload />;
+    case '/results':
+      return <Results />;
+    case '/documents':
+      return <DocumentSelection />;
+    default:
+      return <Home />;
   }
-  
-  return <Home />;
 }
 
 export default App; 

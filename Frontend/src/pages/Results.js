@@ -1,6 +1,12 @@
 import '../styles/Results.css';
+import apiService from '../services/api.js';
 
 const Results = () => {
+  let currentDocument = null;
+  let isLoading = false;
+  let currentFeature = null;
+  let aiResults = null;
+
   const handleBackToDocuments = () => {
     if (window.navigateTo) {
       window.navigateTo('/documents');
@@ -9,30 +15,225 @@ const Results = () => {
     }
   };
 
-  const handleOptionClick = (option) => {
-    alert(`You clicked: ${option}`);
-    // In a real app, this would navigate to a specific feature page
+  const loadDocumentData = () => {
+    try {
+      console.log('Loading document data from sessionStorage...');
+      const storedDocument = sessionStorage.getItem('selectedDocument');
+      console.log('Stored document:', storedDocument);
+      
+      if (storedDocument) {
+        currentDocument = JSON.parse(storedDocument);
+        console.log('Parsed document:', currentDocument);
+        updateUI();
+      } else {
+        console.log('No document found in sessionStorage, redirecting...');
+        // No document selected, redirect back to documents
+        handleBackToDocuments();
+      }
+    } catch (error) {
+      console.error('Error loading document data:', error);
+      handleBackToDocuments();
+    }
   };
 
-  // Fake parsed data for demonstration
-  const fakeParsedText = `
-    This is a simulated parsed text from your uploaded document.
-    It contains key information that has been extracted.
-    For example, important concepts like "Artificial Intelligence",
-    "Machine Learning", and "Natural Language Processing" might be here.
-    The document also discusses "data structures" and "algorithms".
-    This section would typically show the cleaned and processed content.
-  `;
+  const handleOptionClick = async (option) => {
+    if (!currentDocument) {
+      alert('No document selected. Please go back and select a document.');
+      return;
+    }
 
-  const fakeImportantTerms = [
-    "Artificial Intelligence",
-    "Machine Learning", 
-    "Natural Language Processing",
-    "Data Structures",
-    "Algorithms",
-    "Deep Learning",
-    "Neural Networks"
-  ];
+    isLoading = true;
+    currentFeature = option;
+    updateUI();
+
+    try {
+      let result;
+      switch (option) {
+        case 'Summarize Notes':
+          result = await apiService.summarizeDocument(currentDocument.id);
+          break;
+        case 'Questions / Quiz':
+          result = await apiService.generateQuestions(currentDocument.id);
+          break;
+        case 'Important Terms / Flashcards':
+          result = await apiService.extractImportantTerms(currentDocument.id);
+          break;
+        case 'Parsed Text':
+          result = { content: currentDocument.content };
+          break;
+        default:
+          result = { error: 'Unknown option' };
+      }
+
+      aiResults = result;
+      updateUI();
+    } catch (error) {
+      console.error('AI feature failed:', error);
+      aiResults = { error: 'Failed to process request. Please try again.' };
+      updateUI();
+    }
+  };
+
+  const updateUI = () => {
+    console.log('Updating Results UI...');
+    
+    // Wait a bit for the DOM to be ready
+    setTimeout(() => {
+      const resultsContainer = document.querySelector('.results-content');
+      console.log('Results container found:', !!resultsContainer);
+      
+      if (!resultsContainer) {
+        console.error('Results container not found!');
+        return;
+      }
+
+      // Find the main content area more reliably
+      let mainContent = resultsContainer.querySelector('.main-content');
+      if (!mainContent) {
+        // If main-content doesn't exist, create it
+        mainContent = document.createElement('div');
+        mainContent.className = 'main-content';
+        resultsContainer.appendChild(mainContent);
+      }
+      
+      console.log('Main content found:', !!mainContent);
+
+      if (isLoading) {
+        console.log('Showing loading state...');
+        mainContent.innerHTML = `
+          <div class="loading-section">
+            <div class="loading-spinner"></div>
+            <p>Processing your document with AI...</p>
+          </div>
+        `;
+      } else if (aiResults && currentFeature) {
+        console.log('Showing AI results...');
+        mainContent.innerHTML = generateResultsHTML();
+      } else {
+        console.log('Showing options...');
+        mainContent.innerHTML = generateOptionsHTML();
+      }
+    }, 100); // Small delay to ensure DOM is ready
+  };
+
+  const generateOptionsHTML = () => {
+    console.log('Generating options HTML for document:', currentDocument);
+    return `
+      <h1 class="results-title">Your Document is Ready!</h1>
+      <p class="results-subtitle">Here's what you can do with your parsed information:</p>
+
+      <div class="parsed-info-section">
+        <h2>Document: ${currentDocument?.name || 'Unknown'}</h2>
+        <div class="parsed-text-box">
+          <p>${currentDocument?.content?.substring(0, 200)}${currentDocument?.content?.length > 200 ? '...' : ''}</p>
+        </div>
+      </div>
+
+      <div class="options-grid">
+        <div class="option-card" onclick="window.handleOptionClick('Summarize Notes')">
+          <h3>📝 Summarize Notes</h3>
+          <p>Get a concise summary of your document with key points and main ideas.</p>
+        </div>
+        
+        <div class="option-card" onclick="window.handleOptionClick('Questions / Quiz')">
+          <h3>❓ Questions / Quiz</h3>
+          <p>Generate questions or a quiz based on the content to test your knowledge.</p>
+        </div>
+        
+        <div class="option-card" onclick="window.handleOptionClick('Parsed Text')">
+          <h3>📄 Full Parsed Text</h3>
+          <p>View the complete extracted text from your file with formatting.</p>
+        </div>
+        
+        <div class="option-card" onclick="window.handleOptionClick('Important Terms / Flashcards')">
+          <h3>🎯 Important Terms / Flashcards</h3>
+          <p>Identify key terms and create flashcards for memorization.</p>
+        </div>
+      </div>
+    `;
+  };
+
+  const generateResultsHTML = () => {
+    if (aiResults.error) {
+      return `
+        <div class="error-section">
+          <h2>Error</h2>
+          <p>${aiResults.error}</p>
+          <button onclick="window.handleBackToOptions()" class="back-button">← Back to Options</button>
+        </div>
+      `;
+    }
+
+    switch (currentFeature) {
+      case 'Summarize Notes':
+        return `
+          <div class="results-section">
+            <h2>📝 Document Summary</h2>
+            <div class="summary-content">
+              <p>${aiResults.summary}</p>
+            </div>
+            <button onclick="window.handleBackToOptions()" class="back-button">← Back to Options</button>
+          </div>
+        `;
+
+      case 'Questions / Quiz':
+        return `
+          <div class="results-section">
+            <h2>❓ Questions & Quiz</h2>
+            <div class="questions-content">
+              ${aiResults.questions.map((q, index) => `
+                <div class="question-item">
+                  <h4>Question ${index + 1} (${q.type})</h4>
+                  <p>${q.question}</p>
+                </div>
+              `).join('')}
+            </div>
+            <button onclick="window.handleBackToOptions()" class="back-button">← Back to Options</button>
+          </div>
+        `;
+
+      case 'Important Terms / Flashcards':
+        return `
+          <div class="results-section">
+            <h2>🎯 Important Terms & Definitions</h2>
+            <div class="terms-content">
+              ${aiResults.terms.map((term, index) => `
+                <div class="term-item">
+                  <h4>${term.term}</h4>
+                  <p>${term.definition}</p>
+                </div>
+              `).join('')}
+            </div>
+            <button onclick="window.handleBackToOptions()" class="back-button">← Back to Options</button>
+          </div>
+        `;
+
+      case 'Parsed Text':
+        return `
+          <div class="results-section">
+            <h2>📄 Full Parsed Text</h2>
+            <div class="parsed-content">
+              <pre>${aiResults.content}</pre>
+            </div>
+            <button onclick="window.handleBackToOptions()" class="back-button">← Back to Options</button>
+          </div>
+        `;
+
+      default:
+        return generateOptionsHTML();
+    }
+  };
+
+  // Make functions available globally for onclick handlers
+  window.handleOptionClick = handleOptionClick;
+  window.handleBackToOptions = () => {
+    aiResults = null;
+    currentFeature = null;
+    updateUI();
+  };
+
+  // Load document data when component mounts
+  loadDocumentData();
 
   return (
     <div className="results-container">
@@ -40,45 +241,9 @@ const Results = () => {
         <button onClick={handleBackToDocuments} className="back-button">
           ← Back to Documents
         </button>
-        <h1 className="results-title">Your Document is Ready!</h1>
-        <p className="results-subtitle">Here's what you can do with your parsed information:</p>
-
-        <div className="parsed-info-section">
-          <h2>Parsed Text (Excerpt)</h2>
-          <div className="parsed-text-box">
-            <p>{fakeParsedText}</p>
-          </div>
-        </div>
-
-        <div className="options-grid">
-          <div className="option-card" onClick={() => handleOptionClick('Summarize Notes')}>
-            <h3>📝 Summarize Notes</h3>
-            <p>Get a concise summary of your document with key points and main ideas.</p>
-          </div>
-          
-          <div className="option-card" onClick={() => handleOptionClick('Questions / Quiz')}>
-            <h3>❓ Questions / Quiz</h3>
-            <p>Generate questions or a quiz based on the content to test your knowledge.</p>
-          </div>
-          
-          <div className="option-card" onClick={() => handleOptionClick('Parsed Text')}>
-            <h3>📄 Full Parsed Text</h3>
-            <p>View the complete extracted text from your file with formatting.</p>
-          </div>
-          
-          <div className="option-card" onClick={() => handleOptionClick('Important Terms / Flashcards')}>
-            <h3>🎯 Important Terms / Flashcards</h3>
-            <p>Identify key terms and create flashcards for memorization.</p>
-          </div>
-        </div>
-
-        <div className="important-terms-section">
-          <h2>Important Terms to Memorize</h2>
-          <ul className="terms-list">
-            {fakeImportantTerms.map((term, index) => (
-              <li key={index}>{term}</li>
-            ))}
-          </ul>
+        
+        <div className="main-content">
+          {/* Content will be dynamically updated */}
         </div>
       </div>
     </div>

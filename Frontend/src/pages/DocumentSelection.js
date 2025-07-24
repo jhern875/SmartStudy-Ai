@@ -51,16 +51,20 @@ const DocumentSelection = () => {
 
     try {
       documents = await apiService.getDocuments();
+      console.log('Documents loaded:', documents);
+      isLoading = false; // Set loading to false after documents are loaded
       updateUI();
     } catch (error) {
       console.error('Failed to load documents:', error);
       documents = [];
+      isLoading = false; // Set loading to false even on error
       updateUI();
     }
   };
 
   const updateUI = () => {
     const documentsGrid = document.querySelector('.documents-grid');
+    console.log('Updating UI, isLoading:', isLoading, 'documents count:', documents.length);
 
     if (documentsGrid) {
       if (isLoading) {
@@ -68,6 +72,7 @@ const DocumentSelection = () => {
       } else if (documents.length === 0) {
         documentsGrid.innerHTML = '<div class="no-documents">No documents uploaded yet. Upload your first document to get started!</div>';
       } else {
+        console.log('Rendering documents:', documents);
         documentsGrid.innerHTML = documents.map(doc => `
           <div class="document-card" onclick="window.handleDocumentSelect('${doc.id}')">
             <div class="document-icon">
@@ -85,6 +90,8 @@ const DocumentSelection = () => {
           </div>
         `).join('');
       }
+    } else {
+      console.error('Documents grid element not found');
     }
   };
 
