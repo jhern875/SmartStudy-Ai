@@ -47,29 +47,41 @@ const Results = () => {
     updateUI();
 
     try {
+      console.log(`Starting AI feature: ${option}`);
       let result;
-      switch (option) {
-        case 'Summarize Notes':
-          result = await apiService.summarizeDocument(currentDocument.id);
-          break;
-        case 'Questions / Quiz':
-          result = await apiService.generateQuestions(currentDocument.id);
-          break;
-        case 'Important Terms / Flashcards':
-          result = await apiService.extractImportantTerms(currentDocument.id);
-          break;
-        case 'Parsed Text':
-          result = { content: currentDocument.content };
-          break;
-        default:
-          result = { error: 'Unknown option' };
-      }
+      
+      // Add timeout for AI calls
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timed out')), 45000); // 45 second timeout
+      });
+
+      const aiPromise = (async () => {
+        switch (option) {
+          case 'Summarize Notes':
+            return await apiService.summarizeDocument(currentDocument.id);
+          case 'Questions / Quiz':
+            return await apiService.generateQuestions(currentDocument.id);
+          case 'Important Terms / Flashcards':
+            return await apiService.extractImportantTerms(currentDocument.id);
+          case 'Parsed Text':
+            return { content: currentDocument.content };
+          default:
+            return { error: 'Unknown option' };
+        }
+      })();
+
+      result = await Promise.race([aiPromise, timeoutPromise]);
+      console.log(`AI feature completed: ${option}`, result);
 
       aiResults = result;
       updateUI();
     } catch (error) {
       console.error('AI feature failed:', error);
-      aiResults = { error: 'Failed to process request. Please try again.' };
+      aiResults = { 
+        error: error.message === 'Request timed out' 
+          ? 'Request timed out. Please try again with a smaller document.' 
+          : 'Failed to process request. Please try again.' 
+      };
       updateUI();
     }
   };

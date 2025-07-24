@@ -69,5 +69,4 @@ app.get('/api/documents', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 SmartStudy AI Backend running on port ${PORT}`);
   console.log(`📁 Uploads directory: ${uploadsDir}`);
-  console.log(`🔑 OpenAI API Key: ${process.env.OPENAI_API_KEY ? 'Configured' : 'Not configured'}`);
 }); 
