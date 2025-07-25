@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs-extra');
 
@@ -11,18 +12,80 @@ const aiRoutes = require('./routes/ai');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 fs.ensureDirSync(uploadsDir);
 
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static('uploads'));
+
+// Simple in-memory database for storing results
+const resultsDB = new Map();
+
+// Database endpoints
+app.post('/api/results', (req, res) => {
+  try {
+    const { documentId, results, metadata } = req.body;
+    
+    if (!documentId || !results) {
+      return res.status(400).json({ error: 'Document ID and results are required' });
+    }
+
+    const resultEntry = {
+      documentId,
+      results,
+      metadata: {
+        ...metadata,
+        timestamp: new Date().toISOString(),
+        id: Date.now().toString()
+      }
+    };
+
+    resultsDB.set(documentId, resultEntry);
+    
+    console.log('💾 Saved results for document:', documentId);
+    res.json({ 
+      success: true, 
+      message: 'Results saved successfully',
+      id: resultEntry.metadata.id
+    });
+  } catch (error) {
+    console.error('Error saving results:', error);
+    res.status(500).json({ error: 'Failed to save results' });
+  }
+});
+
+app.get('/api/results/:documentId', (req, res) => {
+  try {
+    const { documentId } = req.params;
+    const results = resultsDB.get(documentId);
+    
+    if (!results) {
+      return res.status(404).json({ error: 'Results not found' });
+    }
+    
+    res.json(results);
+  } catch (error) {
+    console.error('Error retrieving results:', error);
+    res.status(500).json({ error: 'Failed to retrieve results' });
+  }
+});
+
+app.get('/api/results', (req, res) => {
+  try {
+    const allResults = Array.from(resultsDB.values());
+    res.json(allResults);
+  } catch (error) {
+    console.error('Error retrieving all results:', error);
+    res.status(500).json({ error: 'Failed to retrieve results' });
+  }
+});
+
 // Routes
-app.use('/api/upload', uploadRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

@@ -11,16 +11,17 @@ class AIService {
       const filePath = path.join(this.uploadsDir, documentId);
       const content = await this.readFileContent(filePath);
       
-      // Limit content length for faster processing
       const limitedContent = content.substring(0, 2000);
       
-      const prompt = `Please provide a concise summary of the following document in 2-3 paragraphs. Focus on the main points and key concepts:
+      const prompt = `Summarize the following document in 3-4 concise paragraphs. Focus on the main points, key ideas, and important details. Make it easy to understand:
 
-      ${limitedContent}
+${limitedContent}
 
-      Summary:`;
+Summary:`;
 
+      console.log('📝 Generating summary...');
       const result = await this.callRealLLaMA(prompt);
+      console.log('📝 Summary generated:', result.substring(0, 100) + '...');
       
       return {
         summary: result,
@@ -29,8 +30,9 @@ class AIService {
     } catch (error) {
       console.error('Error in summarizeDocument:', error);
       return {
-        summary: "This is a demo summary. The document has been processed and contains key information that would be summarized by AI.",
-        status: "demo"
+        summary: "This document appears to contain information that could be summarized. The content includes various topics and details that would benefit from a comprehensive summary.",
+        status: "demo",
+        error: error.message
       };
     }
   }
@@ -42,22 +44,42 @@ class AIService {
       
       const limitedContent = content.substring(0, 1500);
       
-      const prompt = `Based on the following document content, generate 3-4 thoughtful questions. Format as a JSON array with "question" and "type" fields. Keep questions concise:
+      const prompt = `Based on this document, generate 5-7 questions that test understanding of the content. Include different types: factual, conceptual, and analytical questions. Return ONLY a JSON array like this:
+[
+  {"question": "What is...?", "type": "factual"},
+  {"question": "How does...?", "type": "conceptual"},
+  {"question": "Why is...?", "type": "analytical"}
+]
 
-      ${limitedContent}
+Document content:
+${limitedContent}
 
-      Questions:`;
+Questions:`;
 
+      console.log('❓ Generating questions...');
       const result = await this.callRealLLaMA(prompt);
+      console.log('❓ Raw questions response:', result);
       
       // Try to parse JSON, if it fails, return demo questions
       try {
-        const questions = JSON.parse(result);
+        // Clean the response - remove any markdown formatting
+        let cleanResult = result.trim();
+        if (cleanResult.startsWith('```json')) {
+          cleanResult = cleanResult.replace('```json', '').replace('```', '').trim();
+        }
+        if (cleanResult.startsWith('```')) {
+          cleanResult = cleanResult.replace(/```/g, '').trim();
+        }
+        
+        const questions = JSON.parse(cleanResult);
+        console.log('✅ Successfully parsed questions:', questions);
         return {
           questions: questions,
           status: "success"
         };
       } catch (parseError) {
+        console.log('❌ Failed to parse JSON, using demo questions. Parse error:', parseError);
+        console.log('❌ Raw response was:', result);
         return {
           questions: [
             {
@@ -101,27 +123,52 @@ class AIService {
 
   async extractImportantTerms(documentId) {
     try {
+      console.log('📁 Reading file for document ID:', documentId);
       const filePath = path.join(this.uploadsDir, documentId);
+      console.log('📁 Full file path:', filePath);
+      
       const content = await this.readFileContent(filePath);
+      console.log('📄 File content length:', content.length);
+      console.log('📄 First 200 chars of content:', content.substring(0, 200));
       
       const limitedContent = content.substring(0, 1500);
       
-      const prompt = `Extract 5-7 important terms from the following document. Format as a JSON array with "term" and "definition" fields. Keep definitions concise:
+      const prompt = `Analyze this document and extract 5-7 important terms or concepts. For each term, provide a clear definition based on the document content. Return ONLY a JSON array like this:
+[
+  {"term": "Term Name", "definition": "Definition based on the document"},
+  {"term": "Another Term", "definition": "Another definition"}
+]
 
-      ${limitedContent}
+Document content:
+${limitedContent}
 
-      Important Terms:`;
+Important Terms:`;
 
+      console.log('📋 Extracting terms from document...');
+      console.log('📋 Prompt length:', prompt.length);
       const result = await this.callRealLLaMA(prompt);
+      console.log('📋 Raw AI response:', result);
       
       // Try to parse JSON, if it fails, return demo terms
       try {
-        const terms = JSON.parse(result);
+        // Clean the response - remove any markdown formatting
+        let cleanResult = result.trim();
+        if (cleanResult.startsWith('```json')) {
+          cleanResult = cleanResult.replace('```json', '').replace('```', '').trim();
+        }
+        if (cleanResult.startsWith('```')) {
+          cleanResult = cleanResult.replace(/```/g, '').trim();
+        }
+        
+        const terms = JSON.parse(cleanResult);
+        console.log('✅ Successfully parsed terms:', terms);
         return {
           terms: terms,
           status: "success"
         };
       } catch (parseError) {
+        console.log('❌ Failed to parse JSON, using demo terms. Parse error:', parseError);
+        console.log('❌ Raw response was:', result);
         return {
           terms: [
             {
@@ -166,11 +213,15 @@ class AIService {
   // Real LLaMA via Ollama
   async callRealLLaMA(prompt) {
     try {
+      console.log('🤖 Starting AI processing with Gemma3...');
       const { Ollama } = require('ollama');
       const ollama = new Ollama();
       
+      console.log('📤 Sending prompt to Gemma3...');
+      console.log('📤 Prompt preview:', prompt.substring(0, 100) + '...');
+      
       const response = await ollama.chat({
-        model: 'llama2',
+        model: 'gemma3',
         messages: [
           {
             role: 'system',
@@ -183,13 +234,18 @@ class AIService {
         ],
         options: {
           temperature: 0.3,
-          num_predict: 500
+          num_predict: 300, // Reduced for faster response
+          timeout: 120000 // 2 minute timeout
         }
       });
 
+      console.log('✅ AI processing completed successfully!');
+      console.log('✅ Response content length:', response.message.content.length);
+      console.log('✅ Response preview:', response.message.content.substring(0, 100) + '...');
       return response.message.content;
     } catch (error) {
-      console.error('LLaMA API error:', error);
+      console.error('❌ LLaMA API error:', error);
+      console.log('🔄 Falling back to demo responses...');
       // Fallback to demo responses if LLaMA is not available
       return this.callDemoLLaMA(prompt);
     }

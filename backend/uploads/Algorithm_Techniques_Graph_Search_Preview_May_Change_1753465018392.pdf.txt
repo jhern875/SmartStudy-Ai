@@ -1,0 +1,4997 @@
+
+
+Algorithm Techniques
+Graph Theory - Basic Knowledge
+Xian Su
+Recommended Reference Material: 
+•
+Github Open Source Project: Hello Algo 
+•
+Github Repo: krahets/hello-algo 
+•
+Animated Illustrations  
+•
+Support More than 10 Programming Languages 
+•
+Programming, Data Structure, Algorithm, and Algorithm Techniques
+
+Graphs and Trees
+0
+1
+23
+4
+5
+vertex
+loop
+edge
+•
+A graph is a finite set of vertices that are connected by edges. 
+•
+A loop may exist in a graph where an edge leads back to the original vertex.
+
+•
+Queue
+•
+Stack
+queue
+a sequence {4, 2, 5, 3, 1}
+First IN First OUT
+IN
+24
+5
+OUT
+a sequence {4, 2, 5, 3, 1}
+IN
+3524
+1
+OUT
+a sequence {}
+IN
+stack
+a sequence {4, 2, 5, 3, 1}
+First IN Last OUT
+IN
+24
+5
+OUT
+a sequence {4, 2, 5, 3, 1}
+IN
+3524
+1
+OUT
+a sequence {}
+IN
+Necessary Recap: Queue & Stack
+
+Priority queue
+a sequence {4, 2, 5, 3, 1}
+First IN PRIORITY OUT
+IN
+24
+5
+OUT
+a sequence {4, 2, 5, 3, 1}
+IN
+3524
+1
+OUT
+a sequence {}
+IN
+e.g., priority = minimum value
+•
+The priority queue (PQ) is an abstract concept (a queue 
+where elements are dequeued based on priority).
+Necessary Recap: Priority Queue
+
+Given an undirected graph , where: 
+•
+ 
+•
+   
+1.  Use Depth-First Search (DFS) starting from 
+vertex  and output the order of visited vertices. 
+2.   Use Breadth-First Search (BFS) starting from 
+vertex  and output the order of visited vertices.
+G=(V,E)
+V={1,2,3,4,5}
+E={(1,2),(1,5),(2,3),(3,4),(4,5)}
+1
+1
+Example 1: Vertex Traversal in an Undirected Graph
+
+Given an undirected graph , where: 
+•
+ 
+•
+   
+1.  Use Depth-First Search (DFS) starting from 
+vertex  and output the order of visited vertices. 
+2.   Use Breadth-First Search (BFS) starting from 
+vertex  and output the order of visited vertices.
+G=(V,E)
+V={1,2,3,4,5}
+E={(1,2),(1,5),(2,3),(3,4),(4,5)}
+1
+1
+1
+2
+3
+45
+Example 1: Vertex Traversal in an Undirected Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+1. Use BFS starting from vertex  to find all 
+paths to vertex . 
+2. Use DFS starting from vertex  to list the 
+sequence of all visited vertices during the 
+traversal.
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+E
+A
+Example 2: Path Search in a Directed Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+1. Use BFS starting from vertex  to find all 
+paths to vertex . 
+2. Use DFS starting from vertex  to list the 
+sequence of all visited vertices during the 
+traversal.
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+E
+A
+A
+B
+C
+E
+D
+Example 2: Path Search in a Directed Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+1. Use BFS starting from vertex  to find all 
+paths to vertex .
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+E
+A
+B
+C
+E
+D
+Example 2: Path Search in a Directed Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+2. Use DFS starting from vertex  to list the 
+sequence of all visited vertices during the 
+traversal.
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+A
+B
+C
+E
+D
+def dfs(graph, start, visited=None): 
+    if visited is None: 
+        visited = [] 
+    visited.append(start) 
+    for neighbor in graph[start]: 
+        if neighbor not in visited: 
+            dfs(graph, neighbor, visited) 
+    return visited 
+graph = {1: [2, 5], 2: [1, 3], 3: [2, 4], 4: [3, 5], 5: [1, 4]} 
+print(dfs(graph, 1))
+Example 2: Path Search in a Directed Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+1. Use BFS starting from vertex  to find all 
+paths to vertex .
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+E
+A
+B
+C
+E
+D
+def bfs_all_paths(graph, start, target): 
+    queue = [[start]] 
+    paths = [] 
+    while queue: 
+        path = queue.pop(0) 
+        node = path[-1] 
+        if node == target: 
+            paths.append(path) 
+        for neighbor in graph[node]: 
+            if neighbor not in path: 
+                queue.append(path + [neighbor]) 
+    return paths 
+graph = {'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': ['E'], 'E': []} 
+print(bfs_all_paths(graph, 'A', 'E'))
+Example 2: Path Search in a Directed Graph
+
+Given a directed graph , where: 
+•
+ 
+•
+ 
+2. Use DFS starting from vertex  to list the 
+sequence of all visited vertices during the 
+traversal.
+G=(V,E)
+V={A,B,C,D,E}
+E={(A,B),(A,C),(B,D),(C,D),(D,E)}
+A
+A
+B
+C
+E
+D
+def dfs(graph, start, visited=None): 
+    if visited is None: 
+        visited = [] 
+    visited.append(start) 
+    for neighbor in graph[start]: 
+        if neighbor not in visited: 
+            dfs(graph, neighbor, visited) 
+    return visited 
+graph = {'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': ['E'], 'E': []} 
+print(dfs(graph, 'A'))
+Example 2: Path Search in a Directed Graph
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Your task is to find the shortest path from a given start cell (green) to a goal cell (red) 
+while avoiding obstacles. Specifically, we use the following grid to represent the grid and 
+ to represent the location.
+(x,y)
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph?
+Your task is to find the shortest path from a given start cell (green) to a goal cell (red) 
+while avoiding obstacles. Specifically, we use the following grid to represent the grid and 
+ to represent the location.
+(x,y)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph? 
+•
+Vertex: 
+•
+state/position 
+•
+Edge: 
+•
+move between positions
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph? 
+•
+Vertex: 
+•
+state/position 
+•
+Edge: 
+•
+move between positions
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+01234
+0
+1
+2
+3
+4
+x
+y
+<latexit sha1_base64="ni513XzvZ9c5aDNHUytZj8xYBaM=">AAAD6nicjVJda9RAFL1p/Kjxa1sffXCwKCqyJEJrUYSiD/q0VnS7hU1Zkuzsdujkg2S2uIRFfBLxTXwRX/0d/gL9Af4VnzwzyZbUxeqEyT33zLlz752ZMJOiUK7701qyT50+c3b5nHP+wsVLl1srqztFOskj3o1Smea7YVBwKRLeVUJJvpvlPIhDyXvhwRO93jvkeSHS5JWaZnwvDsaJGIkoUKAGrU9P2SPmh3wskjKMA5WL1zPHZTfZfHrG+r7jHTkNsql0m6TXmAtKQzo+T4ZHOQflOvOViHnB1meD1prbds1gi8CrwdoW+67Hj+10xbpGPg0ppYgmFBOnhBSwpIAKfH3yyKUM3B6V4HIgYdY5zchB7AQqDkUA9gD/Mbx+zSbw9Z6FiY6QRWLmiGR0o9YMgUeGrazOzxrav+Uozd66xilsWO8Zg1W0D/ZfcXPl/8bpnhQq3DS9CNSZGUZ3GR3raAQr4SvUr/9TKDnQEFE5UAROgq0YnSOHrc5Vd75vzjkwOg50Ui/zEytMjqi+E61Upidd51xT0jPwkg7Nqs4WIF8H3sTcpu6Affj2Juk8fP+Wvxvf7feev+w8AH9CHF6c9+f7WgQ799reRnvjBZ7eY6rGMl2l63QL7+s+bSHDNnWx8y+LWbetO7a0P9qf7S+VdMmqY67QsWF//Q03EtOT</latexit>
+G=
+!
+"
+"
+"
+"
+#
+00010
+11010
+00000
+01110
+00010
+$
+%
+%
+%
+%
+&
+5!5
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph? 
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node ??? 
+•
+ Goal state ??? 
+•
+Edge: 
+•
+move between positions: ???
+(x,y)
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+01234
+0
+1
+2
+3
+4
+x
+y
+<latexit sha1_base64="ni513XzvZ9c5aDNHUytZj8xYBaM=">AAAD6nicjVJda9RAFL1p/Kjxa1sffXCwKCqyJEJrUYSiD/q0VnS7hU1Zkuzsdujkg2S2uIRFfBLxTXwRX/0d/gL9Af4VnzwzyZbUxeqEyT33zLlz752ZMJOiUK7701qyT50+c3b5nHP+wsVLl1srqztFOskj3o1Smea7YVBwKRLeVUJJvpvlPIhDyXvhwRO93jvkeSHS5JWaZnwvDsaJGIkoUKAGrU9P2SPmh3wskjKMA5WL1zPHZTfZfHrG+r7jHTkNsql0m6TXmAtKQzo+T4ZHOQflOvOViHnB1meD1prbds1gi8CrwdoW+67Hj+10xbpGPg0ppYgmFBOnhBSwpIAKfH3yyKUM3B6V4HIgYdY5zchB7AQqDkUA9gD/Mbx+zSbw9Z6FiY6QRWLmiGR0o9YMgUeGrazOzxrav+Uozd66xilsWO8Zg1W0D/ZfcXPl/8bpnhQq3DS9CNSZGUZ3GR3raAQr4SvUr/9TKDnQEFE5UAROgq0YnSOHrc5Vd75vzjkwOg50Ui/zEytMjqi+E61Upidd51xT0jPwkg7Nqs4WIF8H3sTcpu6Affj2Juk8fP+Wvxvf7feev+w8AH9CHF6c9+f7WgQ799reRnvjBZ7eY6rGMl2l63QL7+s+bSHDNnWx8y+LWbetO7a0P9qf7S+VdMmqY67QsWF//Q03EtOT</latexit>
+G=
+!
+"
+"
+"
+"
+#
+00010
+11010
+00000
+01110
+00010
+$
+%
+%
+%
+%
+&
+5!5
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph? 
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: ???
+(x,y)
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+01234
+0
+1
+2
+3
+4
+x
+y
+<latexit sha1_base64="ni513XzvZ9c5aDNHUytZj8xYBaM=">AAAD6nicjVJda9RAFL1p/Kjxa1sffXCwKCqyJEJrUYSiD/q0VnS7hU1Zkuzsdujkg2S2uIRFfBLxTXwRX/0d/gL9Af4VnzwzyZbUxeqEyT33zLlz752ZMJOiUK7701qyT50+c3b5nHP+wsVLl1srqztFOskj3o1Smea7YVBwKRLeVUJJvpvlPIhDyXvhwRO93jvkeSHS5JWaZnwvDsaJGIkoUKAGrU9P2SPmh3wskjKMA5WL1zPHZTfZfHrG+r7jHTkNsql0m6TXmAtKQzo+T4ZHOQflOvOViHnB1meD1prbds1gi8CrwdoW+67Hj+10xbpGPg0ppYgmFBOnhBSwpIAKfH3yyKUM3B6V4HIgYdY5zchB7AQqDkUA9gD/Mbx+zSbw9Z6FiY6QRWLmiGR0o9YMgUeGrazOzxrav+Uozd66xilsWO8Zg1W0D/ZfcXPl/8bpnhQq3DS9CNSZGUZ3GR3raAQr4SvUr/9TKDnQEFE5UAROgq0YnSOHrc5Vd75vzjkwOg50Ui/zEytMjqi+E61Upidd51xT0jPwkg7Nqs4WIF8H3sTcpu6Affj2Juk8fP+Wvxvf7feev+w8AH9CHF6c9+f7WgQ799reRnvjBZ7eY6rGMl2l63QL7+s+bSHDNnWx8y+LWbetO7a0P9qf7S+VdMmqY67QsWF//Q03EtOT</latexit>
+G=
+!
+"
+"
+"
+"
+#
+00010
+11010
+00000
+01110
+00010
+$
+%
+%
+%
+%
+&
+5!5
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Required to use graph algorithm, but where is the graph? 
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: Up, down, left, right --> (-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+01234
+0
+1
+2
+3
+4
+x
+y
+<latexit sha1_base64="ni513XzvZ9c5aDNHUytZj8xYBaM=">AAAD6nicjVJda9RAFL1p/Kjxa1sffXCwKCqyJEJrUYSiD/q0VnS7hU1Zkuzsdujkg2S2uIRFfBLxTXwRX/0d/gL9Af4VnzwzyZbUxeqEyT33zLlz752ZMJOiUK7701qyT50+c3b5nHP+wsVLl1srqztFOskj3o1Smea7YVBwKRLeVUJJvpvlPIhDyXvhwRO93jvkeSHS5JWaZnwvDsaJGIkoUKAGrU9P2SPmh3wskjKMA5WL1zPHZTfZfHrG+r7jHTkNsql0m6TXmAtKQzo+T4ZHOQflOvOViHnB1meD1prbds1gi8CrwdoW+67Hj+10xbpGPg0ppYgmFBOnhBSwpIAKfH3yyKUM3B6V4HIgYdY5zchB7AQqDkUA9gD/Mbx+zSbw9Z6FiY6QRWLmiGR0o9YMgUeGrazOzxrav+Uozd66xilsWO8Zg1W0D/ZfcXPl/8bpnhQq3DS9CNSZGUZ3GR3raAQr4SvUr/9TKDnQEFE5UAROgq0YnSOHrc5Vd75vzjkwOg50Ui/zEytMjqi+E61Upidd51xT0jPwkg7Nqs4WIF8H3sTcpu6Affj2Juk8fP+Wvxvf7feev+w8AH9CHF6c9+f7WgQ799reRnvjBZ7eY6rGMl2l63QL7+s+bSHDNnWx8y+LWbetO7a0P9qf7S+VdMmqY67QsWF//Q03EtOT</latexit>
+G=
+!
+"
+"
+"
+"
+#
+00010
+11010
+00000
+01110
+00010
+$
+%
+%
+%
+%
+&
+5!5
+
+You are given a 2D grid of size . Each cell in the grid represents a location, and 
+you can either move up, down, left, or right between adjacent cells, provided that the 
+cell is passable (0 and 1 represent road and obstacle, respectively).
+5×5
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Example 3: Shortest Pathfinding
+Can we move arbitrarily? 
+•
+Edge: move between positions: Up, down, left, right --> (-1, 0), (1, 0), (0, -1), (0, 1)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+⇒
+Only one option: 
+(0,1)→(0,2)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+=
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+??????
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+Boundary check!
+if x < 0 | x > 4 | y < 0 | y < 4
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+???
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+Obstacle check!
+if Grid[x][y] == 1
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+??????
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+Boundary check!
+if x < 0 | x > 4 | y < 0 | y < 4
+Obstacle check!
+if Grid[x][y] == 1
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+???
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+VISITED check!
+VISITED = 2D array
+0 -> NOT visited
+1 -> visited
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Root Node
+Leaf Node
+Current Node
+Parent Node
+Child/successor Node
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Representing the state/search 
+space is the first step toward 
+solving the problem. 
+•
+The state space comprises all 
+possible states and can be 
+represented as a graph.
+
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+Basically, it's the same as Example 1.
+
+Given an undirected graph , where: 
+•
+ 
+•
+   
+1.  Use Depth-First Search (DFS) starting from 
+vertex  and output the order of visited vertices. 
+2.   Use Breadth-First Search (BFS) starting from 
+vertex  and output the order of visited vertices.
+G=(V,E)
+V={1,2,3,4,5}
+E={(1,2),(1,5),(2,3),(3,4),(4,5)}
+1
+1
+1
+2
+3
+45
+Example 1: Vertex Traversal in an Undirected Graph
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(1,0)
+3
+(0,-1)
+4
+(-1,0)
+2
+(0,1)
+5
+(1,1)
+7
+(0,0)
+8
+(-1,1)
+6
+(0,2)
+9
+(1,2)
+11
+(0,1)(-1,2)
+10
+(0,3)
+(2,2)
+13
+(1,1)(0,2)
+12
+(1,3)
+(3,2)
+15
+(2,1)
+16
+(1,2)
+14
+(2,3)
+41
+(3,1)
+18
+(2,0)
+19
+(1,1)
+17
+(2,2)
+40
+(3,3)
+4
+3
+(2,2)
+44
+(1,3)
+42
+(2,4)
+45
+(3,0)
+21
+(2,-1)
+38
+(1,0)
+20
+(2,1)
+39
+(3,4)
+55
+(2,3)(1,4)
+46
+(2,5)
+(4,0)
+23
+(3,-1)
+36
+(2,0)
+22
+(3,1)
+37
+(2,4)
+52
+(1,3)
+53
+(0,4)
+47
+(1,5)
+54
+(4,4)
+57
+(3,3)(2,4)
+56
+(3,5)
+(5,0)
+25
+(4,-1)
+26
+(3,0)
+24
+(4,1)
+27
+(1,4)
+49
+(0,3)
+50
+(-1,4)
+48
+(0,5)
+51
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+29
+(4,0)
+30
+(3,1)
+28
+(4,2)
+31
+(5,2)
+33
+(4,1)
+34
+(3,2)
+32
+(4,3)
+35
+Core idea: Branch by Branch
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(1,0)
+3
+(0,-1)
+4
+(-1,0)
+2
+(0,1)
+5
+(1,1)
+7
+(0,0)
+8
+(-1,1)
+6
+(0,2)
+9
+(1,2)
+11
+(0,1)
+12
+(-1,2)
+10
+(0,3)
+13
+(2,2)
+15
+(1,1)
+16
+(0,2)
+14
+(1,3)
+17
+(3,2)
+19
+(2,1)
+20
+(1,2)
+18
+(2,3)
+21
+(3,1)
+23
+(2,0)
+24
+(1,1)
+22
+(2,2)
+25
+(3,3)
+27
+(2,2)
+28
+(1,3)
+26
+(2,4)
+29
+(3,0)
+31
+(2,-1)
+32
+(1,0)
+30
+(2,1)
+33
+(3,4)
+35
+(2,3)
+36
+(1,4)
+34
+(2,5)
+37
+(4,0)
+39
+(3,-1)
+40
+(2,0)
+38
+(3,1)
+41
+(2,4)
+43
+(1,3)
+44
+(0,4)
+42
+(1,5)
+45
+(4,4)
+47
+(3,3)(2,4)
+46
+(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Core idea: Level by Level
+
+•
+Given the following Grid, where 0 and 1 represent road and obstacle, respectively, try 
+to find the shortest path from the green block to the red block.
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+6
+(2,3)
+12
+(2,0)
+7
+(2,4)
+13
+(3,0)
+8
+(3,4)
+16
+(1,4)
+14
+(4,0)
+9
+(0,4)
+15
+(4,4)
+17
+(4,1)
+10
+(4,2)
+11
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+def dfs(graph, start, goal, path=None, 
+visited=None): 
+    if path is None: 
+        path = [start] 
+    if visited is None: 
+        visited = set() 
+         
+    if start == goal: 
+        return path 
+     
+    visited.add(start) 
+     
+    for neighbor in graph.get(start, []): 
+        if neighbor not in visited: 
+            result = dfs(graph, neighbor, 
+goal, path + [neighbor], visited) 
+            if result: 
+                return result 
+    return None
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+6
+(2,3)
+7
+(2,0)
+8
+(2,4)
+9
+(3,0)
+10
+(3,4)
+12
+(1,4)
+11
+(4,0)
+13
+(0,4)
+14
+(4,4)
+15
+(4,1)
+(4,2)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+Given an directed graph 
+: 
+1.  Use Depth-First Search (DFS) 
+starting from vertex  and 
+output the order of visited 
+vertices. 
+2.   Use Breadth-First Search 
+(BFS) starting from vertex 
+ and output the order of 
+visited vertices.
+G=(V,E)
+(0,0)
+(4,4)
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+7
+(2,3)
+6
+(2,0)
+9
+(2,4)
+8
+(3,0)
+12
+(3,4)
+10
+(1,4)
+11
+(4,0)
+(0,4)(4,4)
+13
+(4,1)
+(4,2)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+
+Example 3: Shortest Pathfinding
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+7
+(2,3)
+6
+(2,0)
+9
+(2,4)
+8
+(3,0)
+12
+(3,4)
+10
+(1,4)
+11
+(4,0)
+(0,4)(4,4)
+13
+(4,1)
+(4,2)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+from collections import deque 
+def bfs(graph, start, goal): 
+    queue = deque([[start]]) 
+    visited = set() 
+    while queue: 
+        path = queue.popleft() 
+        node = path[-1] 
+        if node == goal: 
+            return path 
+        if node not in visited: 
+            visited.add(node) 
+            for neighbor in graph.get(node, []): 
+                new_path = path + [neighbor] 
+                queue.append(new_path) 
+    return None
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+1.What's the difference between the following two graph/tree? Why?
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+1.What's the difference between the following two graph/tree? Why?
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Dynamic Construction
+Pre-Traversal
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+1.What's the difference between the following two graph/tree? Why?
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Pre-Traversal
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Dynamic Construction
+Use human heuristics to remove the leaf nodes.
+
+Example 3: Shortest Pathfinding
+In practice, we could only follow 
+the logic of the graph/tree 
+structure instead of constructing 
+the graph/tree explicitly. 
+In short, the "graph/tree" is a 
+virtual logical structure only.
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+
+Example 3: Shortest Pathfinding
+Pseudocode of BFS
+BFS_Shortest_Path(Grid, Start, Goal): 
+    Initialize a queue Q 
+    Initialize a 2D array 'visited' with False values 
+    Add (Start_x, Start_y, 0) to Q  // (x, y, steps) 
+    Mark Start as visited 
+    while Q is not empty: 
+        (x, y, steps) = Q.dequeue() 
+        // If goal is reached, return steps 
+        if (x, y) == Goal: 
+            return steps 
+        // Explore neighbors in all directions (up, down, left, right) 
+        for each (dx, dy) in [(0, 1), (0, -1), (1, 0), (-1, 0)]: 
+            new_x = x + dx 
+            new_y = y + dy 
+            // Check if the move is valid (within grid bounds, not visited, not blocked) 
+            if is_valid(new_x, new_y) and not visited[new_x][new_y]: 
+                Mark (new_x, new_y) as visited 
+                Add (new_x, new_y, steps + 1) to Q 
+    // If the goal cannot be reached, return -1 
+    return -1
+
+Example 3: Shortest Pathfinding
+Pseudocode of DFS
+DFS_Shortest_Path_Stack(Grid, Start, Goal): 
+    Initialize a stack S 
+    Initialize a 2D array 'visited' with False values 
+    Add (Start_x, Start_y, 0) to S  // (x, y, steps) 
+    Set min_steps = infinity 
+    Set found = False 
+    while S is not empty: 
+        (x, y, steps) = S.pop() 
+        // If goal is reached, update min_steps 
+        if (x, y) == Goal: 
+            min_steps = min(min_steps, steps) 
+            found = True 
+            continue 
+        // Mark the current cell as visited 
+        Mark (x, y) as visited 
+        // Explore neighbors in all directions (up, down, left, right) 
+        for each (dx, dy) in [(0, 1), (0, -1), (1, 0), (-1, 0)]: 
+            new_x = x + dx 
+            new_y = y + dy 
+            // Check if the move is valid (within grid bounds, not visited, not blocked) 
+            if is_valid(new_x, new_y) and not visited[new_x][new_y]: 
+                Add (new_x, new_y, steps + 1) to S 
+    // If the goal was reached, return min_steps 
+    if found: 
+        return min_steps 
+    else: 
+  // use -1 to denote there is no solution 
+        return -1 
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+1.What's the difference between the following two graph/tree? Why?
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Pre-Traversal
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Dynamic Construction
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+1.What's the difference between the following two graph/tree? Why?
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Pre-Traversal
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+Dynamic Construction
+BFS_Shortest_Path(Grid, Start, Goal): 
+    Initialize a queue Q 
+    Initialize a 2D array 'visited' with False values 
+    Add (Start_x, Start_y, 0) to Q  // (x, y, steps) 
+    Mark Start as visited 
+    while Q is not empty: 
+        (x, y, steps) = Q.dequeue() 
+       if (x, y) == Goal: 
+            return steps 
+       for each (dx, dy) in [(0, 1), (0, -1), (1, 0), (-1, 0)]: 
+            new_x = x + dx 
+            new_y = y + dy 
+           if is_valid(new_x, new_y) and not visited[new_x][new_y]: 
+                Mark (new_x, new_y) as visited 
+                Add (new_x, new_y, steps + 1) to Q 
+    return -1
+from collections import deque 
+def bfs(graph, start, goal): 
+    queue = deque([[start]]) 
+    visited = set() 
+    while queue: 
+        path = queue.popleft() 
+        node = path[-1] 
+        if node == goal: 
+            return path 
+        if node not in visited: 
+            visited.add(node) 
+            for neighbor in graph.get(node, []): 
+                new_path = path + [neighbor] 
+                queue.append(new_path) 
+    return None
+
+Do we have other possible graph/tree structure for this problem?
+Example 3: Shortest Pathfinding
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+•
+Vertex: 
+•
+States/positions:  
+•
+ Root node --> initial state --> (0, 0) 
+•
+ Goal state --> (4, 4) 
+•
+Edge: 
+•
+move between positions: 
+•
+Up, down, left, right 
+•
+(-1, 0), (1, 0), (0, -1), (0, 1)
+(x,y)
+(0,0)
+(1,0)
+(0,-1)(-1,0)(0,1)
+(1,1)
+(0,0)(-1,1)(0,2)
+(1,2)
+(0,1)(-1,2)(0,3)
+(2,2)
+(1,1)(0,2)(1,3)
+(3,2)
+(2,1)(1,2)(2,3)
+(3,1)
+(2,0)(1,1)(2,2)(3,3)
+(2,2)(1,3)(2,4)
+(3,0)
+(2,-1)(1,0)(2,1)
+(3,4)
+(2,3)(1,4)(2,5)
+(4,0)
+(3,-1)(2,0)(3,1)
+(2,4)
+(1,3)(0,4)(1,5)(4,4)
+(3,3)(2,4)(3,5)
+(5,0)
+(4,-1)(3,0)(4,1)
+(1,4)
+(0,3)(-1,4)(0,5)
+(5,4)
+(4,3)(3,4)(4,5)
+(5,1)
+(4,0)(3,1)(4,2)
+(5,2)
+(4,1)(3,2)(4,3)
+
+Example 3: Shortest Pathfinding
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders:
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+6
+(2,3)
+12
+(2,0)
+7
+(2,4)
+13
+(3,0)
+8
+(3,4)
+16
+(1,4)
+14
+(4,0)
+9
+(0,4)
+15
+(4,4)
+17
+(4,1)
+10
+(4,2)
+11
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+7
+(2,3)
+6
+(2,0)
+9
+(2,4)
+8
+(3,0)
+12
+(3,4)
+10
+(1,4)
+11
+(4,0)
+(0,4)(4,4)
+13
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps 
+3.BFS (Push Right into the Queue first) 
+•
+13 steps
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)
+6
+(2,3)
+7
+(2,0)
+8
+(2,4)
+9
+(3,0)
+10
+(3,4)
+12
+(1,4)
+11
+(4,0)
+13
+(0,4)
+14
+(4,4)
+15
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps 
+3.BFS (Push Right into the Queue first) 
+•
+13 steps 
+4.BFS (Push Left into the Queue first) 
+•
+15 steps
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps 
+3.BFS (Push Right into the Queue first) 
+•
+13 steps 
+4.BFS (Push Left into the Queue first) 
+•
+15 steps
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps 
+3.BFS (Push Right into the Queue first) 
+•
+13 steps 
+4.BFS (Push Left into the Queue first) 
+•
+15 steps
+Why we save the running time (with the 
+same time complexity)? Can we gunarantee 
+to reproduce the best case?
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+Luckily made the best selection
+Example 3: Shortest Pathfinding
+graph = { 
+    (0, 0): [(0, 1)], 
+    (0, 1): [(0, 2)], 
+    (0, 2): [(1, 2)], 
+    (1, 2): [(2, 2)], 
+    (2, 2): [(2, 1), (2, 3)], 
+    (2, 1): [(2, 0)], 
+    (2, 3): [(2, 4)], 
+    (2, 0): [(3, 0)], 
+    (2, 4): [(3, 4), (1, 4)], 
+    (3, 0): [(4, 0)], 
+    (1, 4): [(0, 4)], 
+    (3, 4): [(4, 4)], 
+    (4, 0): [(4, 1)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2)], 
+    (4, 2): [], 
+}
+For easy to show the logic, let's start 
+from the constructed simplified tree.
+We have tried 4 traversal orders: 
+1.DFS (Push Right into the Stack first) 
+•
+17 steps 
+2.DFS (Push Left into the Stack first) 
+•
+9 steps 
+3.BFS (Push Right into the Queue first) 
+•
+13 steps 
+4.BFS (Push Left into the Queue first) 
+•
+15 steps
+Why we save the running time (with the 
+same time complexity)? Can we gunarantee 
+to reproduce the best case?
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+“To (2, 3) is better than to (2, 1).”
+Example 3: Shortest Pathfinding
+During the search, we may need some guidance, 
+e.g.,  
+       is better than 
+((2,2),(2,3))((2,2),(2,1))
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+Example 3: Shortest Pathfinding
+During the search, we may need some guidance, 
+e.g.,  
+       is better than  
+We may need one WEIGHTED graph.
+((2,2),(2,3))((2,2),(2,1))
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+Example 3: Shortest Pathfinding
+During the search, we may need some guidance, 
+e.g.,  
+       is better than  
+We may need one WEIGHTED graph.
+((2,2),(2,3))((2,2),(2,1))
+To get the proper weight/guidance, we need 
+to find some useful knowledge/heuristic 
+from the specific problem.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Any intuition?
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+Example 3: Shortest Pathfinding
+During the search, we may need some guidance, 
+e.g.,  
+       is better than  
+We may need one WEIGHTED graph.
+((2,2),(2,3))((2,2),(2,1))
+To get the proper weight/guidance, we need 
+to find some useful knowledge/heuristic 
+from the specific problem.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+Any intuition? 
+For ,  should be better than .
+(2,2)(2,3)(2,1)
+consistent
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+Example 3: Shortest Pathfinding
+For ,  should be better than .
+(2,2)(2,3)(2,1)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+•
+A way to measure the distance between two points 
+in a grid where you can only move along the grid 
+lines, either horizontally or vertically. 
+•
+Formula: 
+•
+If you have two points  and  on a 
+grid, the Manhattan distance  is 
+•
+(x
+1
+,y
+1
+)(x
+2
+,y
+2
+)
+d
+d=
+|
+x
+2
+−x
+1
+|
++
+|
+y
+2
+−y
+1
+|
+Manhattan distance
+We has this intuition, as the distance from (2, 3) to (4, 4) 
+is shorter than the distance from (2, 1) to (4, 4).
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+？
+Example 3: Shortest Pathfinding
+For ,  should be better than .
+(2,2)(2,3)(2,1)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+Manhattan distance
+We has this intuition, as the distance from (2, 3) to (4, 4) 
+is shorter than the distance from (2, 1) to (4, 4).
+d
+1
+=
+|
+3−0
+|
++
+|
+1−0
+|
+=4d
+2
+=
+|
+4−1
+|
++
+|
+3−2
+|
+=4
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+d=
+|
+x
+2
+−x
+1
+|
++
+|
+y
+2
+−y
+1
+|
+
+Example 3: Shortest Pathfinding
+0000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+8
+00
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+7
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+6
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+0
+5
+Calculate the distance for all positions as the 
+weight.
+Heuristic function  can return An rational 
+estimate of the cost from node  to the goal. 
+In this example, manhattan distance is .
+h(n)
+n
+h(n)
+def manhattan_distance(curent_node, target): 
+    x1, y1 = curent_node 
+    x2, y2 = target 
+    return abs(x1 - x2) + abs(y1 - y2)
+
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+0
+2
+4
+3
+2
+6
+5
+4
+1
+5
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+graph = { 
+    (0, 0): [(0, 1, 7)], 
+    (0, 1): [(0, 2, 6)], 
+    (0, 2): [(1, 2, 5)], 
+    (1, 2): [(2, 2, 5)], 
+    (2, 2): [(2, 1, 5), (2, 3, 3)], 
+    (2, 1): [(2, 0, 6)], 
+    (2, 3): [(2, 4, 2)], 
+    (2, 0): [(3, 0, 5)], 
+    (2, 4): [(3, 4, 1), (1, 4, 3)], 
+    (3, 0): [(4, 0, 4)], 
+    (1, 4): [(0, 4, 2)], 
+    (3, 4): [(4, 4, 0)], 
+    (4, 0): [(4, 1, 3)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2, 2)], 
+    (4, 2): [], 
+}
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+0
+2
+4
+3
+2
+6
+5
+4
+1
+5
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+graph = { 
+    (0, 0): [(0, 1, 7)], 
+    (0, 1): [(0, 2, 6)], 
+    (0, 2): [(1, 2, 5)], 
+    (1, 2): [(2, 2, 5)], 
+    (2, 2): [(2, 1, 5), (2, 3, 3)], 
+    (2, 1): [(2, 0, 6)], 
+    (2, 3): [(2, 4, 2)], 
+    (2, 0): [(3, 0, 5)], 
+    (2, 4): [(3, 4, 1), (1, 4, 3)], 
+    (3, 0): [(4, 0, 4)], 
+    (1, 4): [(0, 4, 2)], 
+    (3, 4): [(4, 4, 0)], 
+    (4, 0): [(4, 1, 3)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2, 2)], 
+    (4, 2): [], 
+}
+We use the Manhattan distance as the 
+estimation to guide the greedy best-first 
+search. 
+•
+Sometimes, it works well and find the best 
+solution (lucky).
+
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)
+(3,4)
+8
+(1,4)
+(4,0)
+(0,4)(4,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+0
+2
+4
+3
+2
+6
+5
+4
+1
+5
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+graph = { 
+    (0, 0): [(0, 1, 7)], 
+    (0, 1): [(0, 2, 6)], 
+    (0, 2): [(1, 2, 5)], 
+    (1, 2): [(2, 2, 5)], 
+    (2, 2): [(2, 1, 5), (2, 3, 3)], 
+    (2, 1): [(2, 0, 6)], 
+    (2, 3): [(2, 4, 2)], 
+    (2, 0): [(3, 0, 5)], 
+    (2, 4): [(3, 4, 1), (1, 4, 3)], 
+    (3, 0): [(4, 0, 4)], 
+    (1, 4): [(0, 4, 2)], 
+    (3, 4): [(4, 4, 0)], 
+    (4, 0): [(4, 1, 3)], 
+    (0, 4): [], 
+    (4, 4): [], 
+    (4, 1): [(4, 2, 2)], 
+    (4, 2): [], 
+}
+We use the Manhattan distance as the 
+estimation to guide the greedy best-first 
+search. 
+•
+Sometimes, it works well and find the best 
+solution (lucky). 
+•
+However, the result might be not optimal, and 
+we have no chance to fix it.
+
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+•
+However, the result might be not optimal, and 
+we have no chance to fix it. Consider the 
+example below.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)(1,4)
+8
+(4,0)
+(0,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+2
+4
+3
+2
+6
+5
+4
+5
+(4,3)
+1
+(4,4)
+0
+Failed!
+
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+•
+However, the result might be not optimal, and 
+we have no chance to fix it. Consider the 
+example below.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)(1,4)
+8
+(4,0)
+(0,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+2
+4
+3
+2
+6
+5
+4
+5
+(4,3)
+1
+(4,4)
+0
+Failed!
+Why?
+
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+•
+However, the result might be not optimal, and 
+we have no chance to fix it. Consider the 
+example below.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)(1,4)
+8
+(4,0)
+(0,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+2
+4
+3
+2
+6
+5
+4
+5
+(4,3)
+1
+(4,4)
+0
+Failed!
+The core idea of greedy best-first search is to always pursue the 
+path with the smallest estimated future cost. However, the future 
+is inherently uncertain, as the estimation of future costs may be 
+inaccurate. In such cases, greedy best-first search not only risks 
+failing to find the optimal solution but may even fail entirely.
+Why?
+
+Example 3: Shortest Pathfinding
+Greedy Best-First Search: 
+•
+In given weighted graph, just pick the 
+best local option every time.
+•
+However, the result might be not optimal, and 
+we have no chance to fix it. Consider the 
+example below.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+1
+(0,1)
+2
+(0,2)
+3
+(1,2)
+4
+(2,2)
+5
+(2,1)(2,3)
+6
+(2,0)
+(2,4)
+7
+(3,0)(1,4)
+8
+(4,0)
+(0,4)
+9
+(4,1)
+(4,2)
+7
+6
+5
+3
+2
+3
+2
+4
+3
+2
+6
+5
+4
+5
+(4,3)
+1
+(4,4)
+0
+Failed!
+The core idea of greedy best-first search is to always pursue the 
+path with the smallest estimated future cost. However, the future 
+is inherently uncertain, as the estimation of future costs may be 
+inaccurate. In such cases, greedy best-first search not only risks 
+failing to find the optimal solution but may even fail entirely.
+Why?
+What is accurate?
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+(4,3)(4,4)
+current node
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node. 
+•
+Weighted graph.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node. 
+•
+Weighted graph.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+•
+The algorithm uses a priority queue 
+(min-heap) to always expand the node 
+with the smallest current distance.
+(2, 1, 5)(2, 3, 5)
+When the current node is (2, 2)
+Assume we pop (2, 1)
+(2, 3, 5)(2, 0, 6)
+We will pop out (2, 3) then
+(It’s like an insurance for exit wrong paths)
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node. 
+•
+Weighted graph.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+•
+The algorithm uses a priority queue 
+(min-heap) to always expand the node 
+with the smallest current distance. 
+•
+The process ends when the target node 
+is reached or all reachable nodes are 
+processed. 
+•
+if found, the best (Optimality). 
+•
+if reached all, no result.
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node. 
+•
+Weighted graph.
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+•
+The algorithm uses a priority queue 
+(min-heap) to always expand the node 
+with the smallest current distance. 
+•
+The process ends when the target node 
+is reached or all reachable nodes are 
+processed. 
+•
+if found, the best (Optimality). 
+•
+if reached all, no result.
+Past vs. Future 
+ vs. 
+g(n)h(n)
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node.
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+Func Dijkstra(graph, source): 
+    Output: Shortest distances (dist) from source to all 
+nodes and predecessors (prev) 
+    for each node v in graph: 
+        dist[v] = ∞ 
+    dist[source] = 0  
+    Create a min-priority queue Q 
+Add source into the Q 
+    While Q is not empty: 
+        dist_so_far, u = Q.pop() 
+        for each neighbor v of u: 
+            if dist[u] + weight(u, v) < dist[v]: 
+                dist[v] = dist[u] + weight(u, v) 
+                push v into the Q 
+    return dist and prev
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, 
+specifically the cost incurred up to the current node. 
+•
+(Non-negative) Weighted graph. 
+•
+Greedy Assumption: 
+•
+Dijkstra’s algorithm works by always expanding 
+the node with the smallest current distance. 
+•
+Once a node’s shortest distance is finalized, the 
+algorithm assumes that no shorter path to this 
+node will ever be found. 
+•
+This assumption is true only if all edge weights 
+are non-negative.
+A
+BC
+2
+-3
+source
+1
+Initiaization 
+Dis(A)=0, Dis(B)=inf, Dis(C)=inf 
+Choose A: 
+Dis(A)=0, Dis(B)=2, Dis(C)=1 
+Choose C:  (do nothing) 
+Dis(A)=0, Dis(B)=2, Dis(C)=1 
+Choose B: 
+2 + -3 = -1 < Dis(C)
+
+Example 3: Shortest Pathfinding
+Dijkstra's Algorithm: 
+•
+The most accurate information we can obtain is the 
+recorded events that have already occurred, specifically 
+the cost incurred up to the current node. 
+•
+Time complexity:  
+•
+When Using a Binary Min-Heap 
+•
+Extracting the minimum node takes  
+•
+At most  nodes in the heap,  
+•
+Updating nodes takes  
+•
+At most relexing  edges, 
+O((
+|
+V
+|
++
+|
+E
+|
+)log
+|
+V
+|
+)
+O(log
+|
+V
+|
+)
+VO(
+|
+V
+|
+log
+|
+V
+|
+)
+O(log
+|
+V
+|
+)
+|
+E
+|
+O(
+|
+E
+|
+log
+|
+V
+|
+)
+Func Dijkstra(graph, source): 
+    for each node v in graph: 
+        dist[v] = ∞ 
+    dist[source] = 0  
+    Create a min-priority queue Q 
+Add source into the Q 
+    While Q is not empty: 
+        dist_so_far, u = Q.pop() 
+        for each neighbor v of u: 
+            if dist[u] + weight(u, v) < dist[v]: 
+                dist[v] = dist[u] + weight(u, v) 
+                push v into the Q 
+    return dist and prev
+Relaxation is the process of checking 
+whether a shorter path to a node can be 
+found by passing through another node, and 
+if so, updating the shortest known distance.
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+•
+For the current node , e.g.,  
+                                                                           
+•
+cost function  
+•
+The cost from the start node to the current node . It’s how far (how much cost) you’ve already traveled. 
+•
+ 
+•
+heuristic function  
+•
+It estimates the cost from the current node  to the goal node. 
+•
+It’s an educated guess of how much farther it is to the goal. 
+•
+ 
+•
+The total cost function  
+•
+the sum of  and , i.e.,  
+•
+nn=(0,4)
+(0,0)(0,1)(0,2)
+(1,0)
+(2,0)
+(1,2)(1,1)
+(2,4)
+(0,3)
+(1,4)
+(2,2)(2,1)(2,3)
+(1,3)
+(0,4)
+(3,0)(3,4)(3,2)(3,1)(3,3)
+(4,0)(4,4)(4,2)(4,1)(4,3)
+(0,0)
+g(n)
+n
+g((0,4))=4
+h(n)
+n
+h((0,4))=4
+f(n)
+g(n)h(n)f(n)=g(n)+h(n)
+f((0,4))=g((0,4))+h((0,4))=4+4=8
+A* can balance between paths that are already known (using ) 
+and paths that are likely to be shorter (using ).
+g(n)
+h(n)
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+•
+How A* Works: 
+1.Start at the initial node 
+1.e.g.,  
+2.The initial cost , as we haven’t moved yet. 
+3. 
+2.Explore neighboring nodes 
+1.For each neighbor, e.g.,  and  
+1.: The cost to reach the current node from the initial node. 
+2.: An estimate of how far this neighbor is from the goal node. 
+3.Update the total cost 
+1.For each neighboring node, compute . 
+2.put   into a priority queue (a list of nodes to explore, ordered by their  values). 
+4.Choose the node with the smallest  from the queue and repeat the process. 
+5.Stop when you reach the goal node. 
+1.No need to traverse all nodes. The first time A* reaches the goal, it will have found the shortest path because of how 
+ is calculated.
+n=(0,0)
+g((0,0))=0
+f((0,0))=g((0,0))+h((0,0))=h((0,0))
+n=(0,1)n=(1,0)
+g(n)
+h(n)
+f(n)
+f(n)f(n)
+f(n)
+f(n)
+
+Example 3: Shortest Pathfinding
+A* search:  
+Heuristic = PAST & FUTURE
+A_Star_Search(Grid, Start, Goal): 
+    Initialize an empty priority queue Q 
+    Initialize a VISITED to keep track of visited nodes 
+    Initialize a dictionary "g_score" where g_score[node] = ∞ for all nodes, except 
+g_score[Start] = 0 
+    Initialize a dictionary "f_score" where f_score[node] = ∞ for all nodes, except 
+f_score[Start] = h(Start, Goal) 
+    Initialize a came_from to track the path 
+    Add Start to Q with priority f_score[Start] 
+    while Q is not empty: 
+        current = Q.pop()  // Get the node in Q with the lowest f_score 
+         
+        if current == Goal: 
+            return // Found the shortest path 
+        Mark current as visited 
+         
+        for each neighbor of current in the 4 possible directions: 
+            if neighbor is not walkable or neighbor is in "visited": 
+                continue 
+             
+            tentative_g_score = g_score[current] + 1  // Each move costs 1 
+             
+            if tentative_g_score < g_score[neighbor]: 
+                Edit came_from // This path to neighbor is better, so record it 
+                g_score[neighbor] = tentative_g_score 
+                f_score[neighbor] = g_score[neighbor] + h(neighbor, Goal)  // f(n) 
+= g(n) + h(n) 
+                 
+                if neighbor is not in Q: 
+                    Add neighbor to Q with priority f_score[neighbor] 
+    return -1  // No path found
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+(0,0)
+1
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)
+(3,4)
+(1,4)
+(4,0)
+(0,4)(4,4)
+(4,1)
+(4,2)
+8
+27
+36
+45
+54
+563
+3
+72
+81
+90
+0
+1
+2
+3
+4
+5
+5
+6
+77
+8
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+00111
+00001
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+(0,0)
+(0,1)
+(0,2)
+(1,2)
+(2,2)
+(2,1)(2,3)
+(2,0)
+(2,4)
+(3,0)(1,4)
+(4,0)
+(0,4)
+(4,1)
+(4,2)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+(4,3)
+1
+(4,4)
+1
+18
+0
+27
+1
+36
+2
+45
+3
+54
+4
+63
+5
+95
+5
+106
+6
+115
+7
+124
+8
+133
+9
+142
+10
+151
+11
+160
+12
+72
+6
+83
+7
+4
+8
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+•
+A* search 
+•
+Pros 
+•
+Efficient Search: A* focuses on the most 
+promising nodes first by leveraging the 
+actual cost (g(n)) and heuristic estimate 
+(h(n)); No need to traverse all nodes. 
+•
+Guaranteed Optimality: A* guarantees the 
+Shortest Path as long as the heuristic is 
+admissible and consistent. 
+•
+Customizable with Heuristics 
+•
+Manhattan distance 
+•
+Euclidean distance 
+•
+Chebyshev distance 
+•
+etc
+•
+A* search 
+•
+Cons 
+•
+Memory-Intensive 
+•
+Stores ALL explored nodes in memory. This 
+can become a significant problem in large 
+search spaces as memory usage grows 
+rapidly. 
+•
+Depends Heavily on the Heuristic 
+•
+A poorly chosen or weak heuristic can 
+cause A* to behave inefficiently, exploring 
+many unnecessary nodes. 
+•
+If the heuristic is NOT admissible or 
+inconsistent, A* may not find the optimal 
+solution.
+
+Example 3: Shortest Pathfinding
+A* search: Heuristic = PAST & FUTURE
+•
+A* search 
+•
+Cons 
+•
+Memory-Intensive 
+•
+Stores ALL explored nodes in memory. This 
+can become a significant problem in large 
+search spaces as memory usage grows 
+rapidly. 
+•
+Depends Heavily on the Heuristic 
+•
+A poorly chosen or weak heuristic can 
+cause A* to behave inefficiently, exploring 
+many unnecessary nodes. 
+•
+If the heuristic is NOT admissible or 
+inconsistent, A* may not find the optimal 
+solution.
+start
+a
+...
+...
+...
+......
+...
+...
+goal
+1
+1
+11
+11
+1
+1
+11
+11
+1
+
+Summary
+•
+Uninformed Search 
+•
+Search without guidance, i.e., blind search 
+•
+Breadth-first Search (BFS) 
+•
+Depth-first Search (DFS) 
+•
+Informed Search 
+•
+Search with guidance, i.e., heuristic search 
+•
+common heuristics 
+•
+Manhattan Distance 
+•
+Chebyshev Distance 
+•
+Eunlidean Distance 
+•
+Greedy Best-first Search (leverage the estimation regarding future) 
+•
+Dijkstra's Algorithm (leverage the collected info regarding past) 
+•
+A* search (leverage both past and future)
+000
+1
+0
+01
+0
+1
+0
+000
+1
+0
+01111
+00000
+0
+•
+Define  
+•
+node 
+•
+edge 
+•
+Construct plain graph/tree 
+•
+Construct weighted graph/tree
+
+The -puzzle is a sliding puzzle that consists of a  grid containing  numbered 
+tiles ( to ) and one empty space.
+83×38
+18
+The goal is to rearrange the tiles from an arbitrary initial configuration into a specified 
+goal configuration by sliding the tiles into the empty space.
+Homework: Eight Puzzle Game
+
+Homework: Eight Puzzle Game
+1.Can we transfer this problm into a general graph search problem? (node & edge) 
+1.If it's okay, provide the graph; if not, provide the analysis to show why. 
+2.Slove this problem using dynamic construction of the search space. 
+1.Implement BFS  
+2.Implement DFS 
+3.Compare the performance and provide your understanding. 
+3.Analyze how to build a weighted tree for this problem?  
+1.Implement greedy best-first search, report your result. 
+2.Implement dijkstra's algorithm, report your result. 
+3.Implement A* search, report your result.

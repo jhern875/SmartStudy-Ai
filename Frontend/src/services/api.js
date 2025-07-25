@@ -171,6 +171,58 @@ class ApiService {
       };
     }
   }
+
+  // Database methods for saving and retrieving results
+  async saveResults(documentId, results, metadata) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/results`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ documentId, results, metadata }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save results');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Save results failed:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async getResults(documentId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/results/${documentId}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to get results');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Get results failed:', error);
+      return null;
+    }
+  }
+
+  async getAllResults() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/results`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to get all results');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Get all results failed:', error);
+      return [];
+    }
+  }
 }
 
 const apiService = new ApiService();
