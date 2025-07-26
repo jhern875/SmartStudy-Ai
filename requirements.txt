@@ -1,0 +1,25 @@
+# SmartStudy AI - Python Dependencies
+# These packages are for potential Python enhancements, deployment scripts, or testing
+
+# Web Framework (for potential Python backend alternative)
+flask==2.3.3
+flask-cors==4.0.0
+
+# File Processing (for enhanced document processing)
+PyPDF2==3.0.1
+python-docx==0.8.11
+
+# Development and Testing
+pytest==7.4.2
+black==23.9.1
+flake8==6.1.0
+
+# Environment and Configuration
+python-dotenv==1.0.0
+
+# Deployment
+gunicorn==21.2.0
+
+# Note: This application primarily uses Node.js and Ollama for AI processing.
+# These Python packages are for potential future enhancements, testing, or deployment scripts.
+# To install: pip install -r requirements.txt 

@@ -125,4 +125,43 @@ router.get('/:filename', (req, res) => {
   }
 });
 
+// Delete file endpoint
+router.delete('/:filename', (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, '..', 'uploads', filename);
+    const textFilePath = filePath + '.txt';
+
+    console.log('🗑️ Attempting to delete file:', filename);
+    console.log('🗑️ File path:', filePath);
+    console.log('🗑️ Text file path:', textFilePath);
+
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+      console.log('🗑️ File not found:', filePath);
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    // Delete the main file
+    fs.unlinkSync(filePath);
+    console.log('🗑️ Deleted main file:', filePath);
+
+    // Delete the corresponding .txt file if it exists
+    if (fs.existsSync(textFilePath)) {
+      fs.unlinkSync(textFilePath);
+      console.log('🗑️ Deleted text file:', textFilePath);
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'File deleted successfully',
+      deletedFile: filename
+    });
+
+  } catch (error) {
+    console.error('🗑️ Error deleting file:', error);
+    res.status(500).json({ error: 'Failed to delete file' });
+  }
+});
+
 module.exports = router; 

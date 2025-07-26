@@ -172,6 +172,35 @@ class ApiService {
     }
   }
 
+  // Extract concepts and relationships
+  async extractConcepts(documentId) {
+    try {
+      console.log('🧠 Requesting concept extraction for document:', documentId);
+      const response = await fetch(`${API_BASE_URL}/ai/concepts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ documentId }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to extract concepts');
+      }
+      
+      const concepts = await response.json();
+      console.log('🧠 Concepts extracted:', concepts);
+      return concepts;
+    } catch (error) {
+      console.error('Concept extraction failed:', error);
+      return {
+        nodes: [],
+        edges: [],
+        error: 'Failed to extract concepts'
+      };
+    }
+  }
+
   // Database methods for saving and retrieving results
   async saveResults(documentId, results, metadata) {
     try {
@@ -221,6 +250,34 @@ class ApiService {
     } catch (error) {
       console.error('Get all results failed:', error);
       return [];
+    }
+  }
+
+  // Delete a document
+  async deleteDocument(filename) {
+    try {
+      console.log('🗑️ Deleting document:', filename);
+      console.log('🗑️ Delete URL:', `${API_BASE_URL}/upload/${filename}`);
+      
+      const response = await fetch(`${API_BASE_URL}/upload/${filename}`, {
+        method: 'DELETE',
+      });
+
+      console.log('🗑️ Delete response status:', response.status);
+      console.log('🗑️ Delete response ok:', response.ok);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log('🗑️ Delete error data:', errorData);
+        throw new Error(errorData.error || 'Failed to delete document');
+      }
+
+      const result = await response.json();
+      console.log('🗑️ Delete result:', result);
+      return result;
+    } catch (error) {
+      console.error('🗑️ Delete failed:', error);
+      throw error;
     }
   }
 }

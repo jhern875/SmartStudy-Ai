@@ -60,4 +60,23 @@ router.post('/terms', async (req, res) => {
   }
 });
 
+// Extract concepts and relationships
+router.post('/concepts', async (req, res) => {
+  try {
+    const { documentId } = req.body;
+    
+    if (!documentId) {
+      return res.status(400).json({ error: 'Document ID is required' });
+    }
+
+    console.log('🧠 Concept extraction requested for document:', documentId);
+    const concepts = await aiService.extractConcepts(documentId);
+    
+    res.json(concepts);
+  } catch (error) {
+    console.error('Concept extraction failed:', error);
+    res.status(500).json({ error: 'Failed to extract concepts' });
+  }
+});
+
 module.exports = router; 

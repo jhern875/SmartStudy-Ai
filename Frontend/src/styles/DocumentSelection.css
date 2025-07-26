@@ -109,24 +109,47 @@
 }
 
 .document-actions {
-  flex-shrink: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .select-button {
-  background: #3B82F6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 6px;
   padding: 8px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  border-radius: 20px;
   cursor: pointer;
+  font-size: 14px;
   transition: all 0.3s ease;
 }
 
 .select-button:hover {
-  background: #2563EB;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button {
+  background: #ff4757;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button:hover {
+  background: #ff3742;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
 }
 
 .upload-new-section {

@@ -23,15 +23,21 @@ const DocumentSelection = () => {
 
   const handleDocumentSelect = async (documentId) => {
     try {
+      console.log('Getting full content for document:', documentId);
+      
       // Get the full document content
       const fileContent = await apiService.getFileContent(documentId);
+      console.log('File content received:', fileContent);
       
       // Store the document content for the results page
-      sessionStorage.setItem('selectedDocument', JSON.stringify({
+      const documentData = {
         id: documentId,
         content: fileContent.extractedText,
         name: documentId
-      }));
+      };
+      
+      console.log('Storing document data:', documentData);
+      sessionStorage.setItem('selectedDocument', JSON.stringify(documentData));
 
       // Navigate to results page
       if (window.navigateTo) {
@@ -42,6 +48,36 @@ const DocumentSelection = () => {
     } catch (error) {
       console.error('Failed to get document content:', error);
       alert('Failed to load document. Please try again.');
+    }
+  };
+
+  const handleDeleteDocument = async (documentId, documentName) => {
+    try {
+      console.log('🗑️ Delete requested for:', documentId, documentName);
+      
+      // Show confirmation dialog
+      const confirmed = window.confirm(`Are you sure you want to delete "${documentName}"?\n\nThis action cannot be undone.`);
+      
+      if (!confirmed) {
+        console.log('🗑️ Delete cancelled by user');
+        return;
+      }
+
+      console.log('🗑️ Deleting document:', documentId);
+      
+      // Call the delete API
+      const result = await apiService.deleteDocument(documentId);
+      console.log('🗑️ Delete API result:', result);
+      
+      // Show success message
+      alert(`✅ "${documentName}" has been deleted successfully!`);
+      
+      // Reload the documents list
+      await loadDocuments();
+      
+    } catch (error) {
+      console.error('🗑️ Failed to delete document:', error);
+      alert('❌ Failed to delete document. Please try again.');
     }
   };
 
@@ -86,6 +122,9 @@ const DocumentSelection = () => {
             </div>
             <div class="document-actions">
               <button class="select-button">Select</button>
+              <button class="delete-button" onclick="event.stopPropagation(); window.handleDeleteDocument('${doc.id}', '${doc.name}')">
+                🗑️
+              </button>
             </div>
           </div>
         `).join('');
@@ -129,8 +168,9 @@ const DocumentSelection = () => {
     return `${Math.floor(diffInHours / 24)} days ago`;
   };
 
-  // Make handleDocumentSelect available globally for onclick handlers
+  // Make functions available globally for onclick handlers
   window.handleDocumentSelect = handleDocumentSelect;
+  window.handleDeleteDocument = handleDeleteDocument;
 
   // Load documents when component mounts
   loadDocuments();

@@ -67,9 +67,9 @@ const Upload = () => {
         content: result.content || 'Content will be processed...'
       }));
       
-      // Redirect to results page
+      // Redirect to document selection page
       setTimeout(() => {
-        window.location.href = '/results';
+        window.location.href = '/documents';
       }, 1000);
       
     } catch (error) {
